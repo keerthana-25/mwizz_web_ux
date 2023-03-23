@@ -7,7 +7,7 @@ export class Navigation extends Component {
         <nav>
         <NavLink to="/processLog">Request Log Process </NavLink>
         <NavLink to="/status">Get Status </NavLink>
-        <NavLink to="/updatePolicy">Update Policy</NavLink>
+        {/* <NavLink to="/updatePolicy">Update Policy</NavLink> */}
         <NavLink to="/allRequestDetails">Get All Request Details</NavLink>
         </nav>
     )

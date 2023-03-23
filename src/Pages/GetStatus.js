@@ -7,7 +7,8 @@ class GetStatus extends Component {
     this.state = {
         requestId : '',
         requestState : '',
-        errMsg : ''
+        errMsg : '',
+        success:false,
     }
   }
 
@@ -22,8 +23,10 @@ class GetStatus extends Component {
       }
     })
     .then(response => {
-        console.log(response.data)
-        this.setState({requestState: response.data.status})
+      this.setState({success: true})
+      console.log(response.data)
+      this.setState({requestState: response.data.state})
+      
     })
     .catch(error => {
         console.log(error)
@@ -46,7 +49,7 @@ class GetStatus extends Component {
             </div>
             <button type='submit'>Submit</button>
         </form>
-        {this.state.errMsg ? <div>{this.state.errMsg}</div> : <div>The status of {this.state.requestId} - {this.state.requestState}</div>}
+        {this.state.errMsg ? <div>{this.state.errMsg}</div> : this.state.success ?<div><b> Request State :  </b>{this.state.requestState}</div>:''}
       </div>
     )
   }

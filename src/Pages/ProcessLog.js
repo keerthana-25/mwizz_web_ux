@@ -7,7 +7,6 @@ class ProcessLog extends Component {
     this.state = {
         productName : '',
         logFileName : '',
-        severity : '',
         stacktraceFile : null,
         requestId: '',
         errMsg : ''
@@ -21,7 +20,6 @@ class ProcessLog extends Component {
     formData.append('stacktraceFile', this.state.stacktraceFile)
     formData.append('productName', this.state.productName)
     formData.append('logFileName', this.state.logFileName)
-    formData.append('severity', this.state.severity)
       
     console.log(formData)
     
@@ -30,7 +28,7 @@ class ProcessLog extends Component {
     e.preventDefault()
     axios.post(url, formData, {
       headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
       }
     })
     .then(response => {
@@ -64,11 +62,6 @@ class ProcessLog extends Component {
             <div>
               <label>Log File Name -
                 <input type="text" name="logFileName" value={this.state.logFileName} onChange={this.changeHandler}/>
-              </label>
-            </div>
-            <div>
-              <label>Severity -
-                <input type="text" name="severity" value={this.state.severity} onChange={this.changeHandler}/>
               </label>
             </div>
             <div>

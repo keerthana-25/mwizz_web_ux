@@ -38,7 +38,7 @@ class AllRequestDetails extends Component {
     
       render() {
         const data = this.state.allData
-        const headers = ['_id', 'productName', 'logFileName', 'severity', 'state']
+        const headers = ['_id', 'productName', 'logFileName', 'state']
         return (
           <div>
             <form onSubmit={this.submitHandler}>
