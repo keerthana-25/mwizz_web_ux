@@ -14,7 +14,7 @@ class AllRequestDetails extends Component {
       submitHandler = e => {
         e.preventDefault()
         console.log(this.state)
-        let url = 'https://jsonplaceholder.typicode.com/posts/'
+        let url = 'http://localhost:5000/allRequestDetails'
         
         axios.get(url, {
             params: {
@@ -23,7 +23,8 @@ class AllRequestDetails extends Component {
           })
         .then(response => {
             console.log(response)
-            this.setState({allData: response.data})
+            this.setState({allData: response.data.data})
+            console.log(this.state.allData)
         })
         .catch(error => {
             console.log(error)
@@ -37,6 +38,7 @@ class AllRequestDetails extends Component {
     
       render() {
         const data = this.state.allData
+        const headers = ['_id', 'productName', 'logFileName', 'severity', 'state']
         return (
           <div>
             <form onSubmit={this.submitHandler}>
@@ -47,8 +49,32 @@ class AllRequestDetails extends Component {
                 </div>
                 <button type='submit'>Submit</button>
             </form>
+            
             {
-                data.length ?  data.map(d => <div key={d.id}>{d.title}</div>) : null
+              data.length ?  
+                <div>
+                  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                    <thead>
+                      <tr>
+                        {headers.map((header) => (
+                          <th key={header} style={{ border: '1px solid black', padding: '8px', textAlign: 'left'}}>
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.map((row, index) => (
+                        <tr key={index}>
+                          {headers.map((header) => (
+                            <td key={header} style={{ border: '1px solid black', padding: '8px' }}>{row[header]}</td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+               : null
             }
             {this.state.errMsg ? <div>{this.state.errMsg}</div> : null}
           </div>

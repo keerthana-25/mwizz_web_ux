@@ -6,7 +6,7 @@ class GetStatus extends Component {
     super(props)
     this.state = {
         requestId : '',
-        requestState : 'init',
+        requestState : '',
         errMsg : ''
     }
   }
@@ -14,7 +14,7 @@ class GetStatus extends Component {
   submitHandler = e => {
     e.preventDefault()
     console.log(this.state)
-    let url = 'https://jsonplaceholder.typicode.com/posts/'
+    let url = 'http://localhost:5000/processLog/status'
     
     axios.get(url, {
       params: {
@@ -22,8 +22,8 @@ class GetStatus extends Component {
       }
     })
     .then(response => {
-        console.log(response)
-        this.setState({requestState: response.data})
+        console.log(response.data)
+        this.setState({requestState: response.data.status})
     })
     .catch(error => {
         console.log(error)
@@ -46,8 +46,7 @@ class GetStatus extends Component {
             </div>
             <button type='submit'>Submit</button>
         </form>
-        {this.state.requestState.id}
-        {this.state.errMsg ? <div>{this.state.errMsg}</div> : null}
+        {this.state.errMsg ? <div>{this.state.errMsg}</div> : <div>The status of {this.state.requestId} - {this.state.requestState}</div>}
       </div>
     )
   }

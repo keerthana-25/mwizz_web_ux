@@ -8,7 +8,7 @@ class ProcessLog extends Component {
         productName : '',
         logFileName : '',
         severity : '',
-        stacktrace : '',
+        stacktraceFile : null,
         requestId: '',
         errMsg : ''
     }
@@ -16,21 +16,26 @@ class ProcessLog extends Component {
 
   submitHandler = e => {
     console.log(this.state)
-    const postData = {
-      productName : this.state.productName,
-      logFileName : this.state.logFileName,
-      severity : this.state.severity,
-      stacktrace : this.state.stacktrace,
-    }
-    console.log(postData)
+
+    const formData = new FormData();
+    formData.append('stacktraceFile', this.state.stacktraceFile)
+    formData.append('productName', this.state.productName)
+    formData.append('logFileName', this.state.logFileName)
+    formData.append('severity', this.state.severity)
+      
+    console.log(formData)
     
-    let url = 'https://jsonplaceholder.typicode.com/posts/'
+    let url = 'http://localhost:5000/processLog'
 
     e.preventDefault()
-    axios.post(url, postData)
+    axios.post(url, formData, {
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
     .then(response => {
         console.log("RESPONSE : ", response)
-        this.setState({requestId: response.data.id})
+        this.setState({requestId: response.data.requestId})
     })
     .catch(error => {
         console.log(error)
@@ -42,29 +47,33 @@ class ProcessLog extends Component {
     this.setState({[e.target.name] : e.target.value})
   }
 
+  fileChangeHandler = e => {
+    this.setState({ stacktraceFile: e.target.files[0] });
+  }
+
 
   render() {
     return (
       <div>
         <form onSubmit={this.submitHandler}>
             <div>
-              <label>Product Name : 
+              <label>Product Name -
                 <input type="text" name="productName" value={this.state.productName} onChange={this.changeHandler}/>
               </label>
             </div>
             <div>
-              <label>Log File Name : 
+              <label>Log File Name -
                 <input type="text" name="logFileName" value={this.state.logFileName} onChange={this.changeHandler}/>
               </label>
             </div>
             <div>
-              <label>Severity : 
+              <label>Severity -
                 <input type="text" name="severity" value={this.state.severity} onChange={this.changeHandler}/>
               </label>
             </div>
             <div>
-              <label>Stacktrace : 
-                <input type="text" name="stacktrace" value={this.state.stacktrace} onChange={this.changeHandler}/>
+              <label>Upload stacktraceFile File -
+                <input type="file" onChange={this.fileChangeHandler}/>
               </label>
             </div>
             <button type='submit'>Submit</button>
